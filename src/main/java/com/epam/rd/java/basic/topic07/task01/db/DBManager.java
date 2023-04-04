@@ -21,7 +21,7 @@ public class DBManager {
 		this.connection = connection;
 	}
 
-	public static synchronized DBManager getInstance() {
+	public static synchronized DBManager getInstance() throws DBException {
 		if (instance == null){
 			try (InputStream inputStream = new FileInputStream("app.properties")){
 				Properties properties = new Properties();
@@ -30,11 +30,11 @@ public class DBManager {
 				Connection connection = DriverManager.getConnection(connectionUrl);
 				instance = new DBManager(connection);
 			}catch (FileNotFoundException e) {
-				throw new RuntimeException(e);
+				throw new DBException(e);
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				throw new DBException(e);
 			} catch (SQLException e) {
-				throw new RuntimeException(e);
+				throw new DBException(e);
 			}
 		}
 		return instance;
@@ -51,7 +51,7 @@ public class DBManager {
 			}
 			return users;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DBException(e);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class DBManager {
 			int result = preparedStatement.executeUpdate();
 			return result == 1;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DBException(e);
 		}
 	}
 
@@ -73,7 +73,7 @@ public class DBManager {
 			String userLogin = resultSet.getString(USER_LOGIN);
 			return new User(id,userLogin);
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DBException(e);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class DBManager {
 			String teamName = resultSet.getString(TEAM_NAME);
 			return new Team(id,teamName);
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DBException(e);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class DBManager {
 			}
 			return teams;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DBException(e);
 		}
 	}
 
@@ -110,7 +110,7 @@ public class DBManager {
 			int result = preparedStatement.executeUpdate();
 			return result == 1;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DBException(e);
 		}
 	}
 
