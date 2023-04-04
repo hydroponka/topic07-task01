@@ -85,7 +85,7 @@ public class TaskTest {
 	private DBManager dbm;
 	
 	@BeforeEach
-	void setUp() throws SQLException, DBException {
+	void setUp() throws SQLException {
 		dbm = DBManager.getInstance();
 
 		con.createStatement().executeUpdate(CREATE_USERS_TABLE);

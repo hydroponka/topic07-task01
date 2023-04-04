@@ -21,7 +21,7 @@ public class DBManager {
 		this.connection = connection;
 	}
 
-	public static synchronized DBManager getInstance() throws DBException {
+	public static synchronized DBManager getInstance() {
 		if (instance == null){
 			try (InputStream inputStream = new FileInputStream("app.properties")){
 				Properties properties = new Properties();
@@ -29,12 +29,10 @@ public class DBManager {
 				String connectionUrl = properties.getProperty("connection.url");
 				Connection connection = DriverManager.getConnection(connectionUrl);
 				instance = new DBManager(connection);
-			}catch (FileNotFoundException e) {
-				throw new DBException(e);
-			} catch (IOException e) {
-				throw new DBException(e);
 			} catch (SQLException e) {
-				throw new DBException(e);
+				throw new RuntimeException(e);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
 		return instance;
